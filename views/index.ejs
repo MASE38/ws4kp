@@ -5,16 +5,27 @@
 <head>
 <script>
 (function () {
+  var MAX_VOLUME = 0.15;
+
   var params = new URLSearchParams(window.location.search);
   var inDiscord = params.has('frame_id')
     || window.location.hostname.indexOf('discordsays.com') !== -1;
-  if (!inDiscord || params.has('latLonQuery')) return;
-  var isMobile = (params.get('platform') || '').toLowerCase() === 'mobile'
-    || window.innerWidth < 700;
+  if (!inDiscord) return;
+
+  var proto = window.HTMLMediaElement && HTMLMediaElement.prototype;
+  var desc = proto && Object.getOwnPropertyDescriptor(proto, 'volume');
+  if (desc && desc.set) {
+    Object.defineProperty(proto, 'volume', {
+      get: desc.get,
+      set: function (v) { desc.set.call(this, Math.min(Number(v) || 0, MAX_VOLUME)); },
+      configurable: true
+    });
+  }
+
+  if (params.has('latLonQuery')) return;
   params.set('latLonQuery', 'Portland, OR, USA');
   params.set('wide', 'true');
   params.set('mediaPlaying', 'true');
-  params.set('mediaVolume', '0.1');
   history.replaceState(null, '', window.location.pathname + '?' + params.toString());
 })();
 </script>
