@@ -1,7 +1,13 @@
 import { DiscordSDK, patchUrlMappings } from '@discord/embedded-app-sdk';
 
-if (!window.location.search) {
-  window.location.replace('/?latLonQuery=Portland%2C+OR%2C+USA&kiosk=true&wide=true&mediaPlaying=true&mediaVolume=0.75');
+const params = new URLSearchParams(window.location.search);
+if (!params.has('latLonQuery')) {
+  params.set('latLonQuery', 'Portland, OR, USA');
+  params.set('kiosk', 'true');
+  params.set('wide', 'true');
+  params.set('mediaPlaying', 'true');
+  params.set('mediaVolume', '0.25');
+  window.location.replace(`${window.location.pathname}?${params}`);
 }
 
 patchUrlMappings([
