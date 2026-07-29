@@ -1,4 +1,11 @@
-import { DiscordSDK } from '@discord/embedded-app-sdk';
+import { DiscordSDK, patchUrlMappings } from '@discord/embedded-app-sdk';
+
+patchUrlMappings([
+  { prefix: '/geocode', target: 'geocode.arcgis.com' },
+  { prefix: '/weather-api', target: 'api.weather.gov' },
+  { prefix: '/radar', target: 'mesonet.agron.iastate.edu' },
+  { prefix: '/spc', target: 'www.spc.noaa.gov' },
+]);
 
 console.log('WS4KP custom.js loaded');
 
