@@ -16,10 +16,11 @@ if (inDiscord) {
   ]);
 
   const rules = [
-    'a[href*="github.com"] { display: none !important; }',
-    '#divInfo, .content-wrapper > .heading { display: none !important; }',
-  ];
-  if (isMobile) rules.push('.lower-flex-container { display: none !important; }');
+  'a[href*="github.com"] { display: none !important; }',
+  '#divInfo, .content-wrapper > .heading { display: none !important; }',
+  '#settings-kiosk-label, #settings-stickyKiosk-label { display: none !important; }',
+];
+if (isMobile) rules.push('.lower-flex-container { display: none !important; }');
 
   const style = document.createElement('style');
   style.textContent = rules.join('\n');
@@ -35,5 +36,18 @@ async function start() {
     console.log('Not running inside Discord:', e.message);
   }
 }
+
+function setViewMode() {
+  const sel = document.getElementById('settings-viewMode-select');
+  if (!sel) return;
+  const opt = [...sel.options].find(
+    (o) => /wide/i.test(o.text) && /enhanced/i.test(o.text)
+  );
+  if (!opt || sel.value === opt.value) return;
+  sel.value = opt.value;
+  sel.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+setViewMode();
 
 start();
