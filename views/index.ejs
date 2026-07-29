@@ -25,22 +25,31 @@
   }
 
   var changed = false;
+
   if (inDiscord && params.get('kiosk') !== 'false') {
     params.set('kiosk', 'false');
     changed = true;
   }
+
   if (!params.has('mediaPlaying')) {
-    if (inDiscord) params.set('latLonQuery', 'Portland, OR, USA');
-    params.set('wide', 'true');
+    var displays = ['hazards', 'current-weather', 'latest-observations', 'hourly',
+      'hourly-graph', 'travel', 'regional-forecast', 'local-forecast',
+      'extended-forecast', 'almanac', 'spc-outlook', 'radar'];
+    for (var i = 0; i < displays.length; i++) params.set(displays[i], 'true');
+
+    params.set('viewMode', 'wide-enhanced');
     params.set('mediaPlaying', 'true');
     params.set('mediaVolume', (inDiscord && isMobile) ? '0.04' : '0.75');
+    if (inDiscord) params.set('latLonQuery', 'Portland, OR, USA');
     changed = true;
   }
+
   if (changed) {
     history.replaceState(null, '', window.location.pathname + '?' + params.toString());
   }
 })();
 </script>
+
   <meta charset="utf-8" />
   <title>WeatherStar 4000+</title>
   <meta name="description" content="Web based WeatherStar 4000 simulator that reports current and forecast weather conditions plus a few extras!" />
