@@ -3,6 +3,22 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var inDiscord = params.has('frame_id')
+    || window.location.hostname.indexOf('discordsays.com') !== -1;
+  if (!inDiscord || params.has('latLonQuery')) return;
+  var isMobile = (params.get('platform') || '').toLowerCase() === 'mobile'
+    || window.innerWidth < 700;
+  params.set('latLonQuery', 'Portland, OR, USA');
+  params.set('wide', 'true');
+  params.set('mediaPlaying', 'true');
+  params.set('mediaVolume', '0.25');
+  if (isMobile) params.set('kiosk', 'true');
+  history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+})();
+</script>
   <meta charset="utf-8" />
   <title>WeatherStar 4000+</title>
   <meta name="description" content="Web based WeatherStar 4000 simulator that reports current and forecast weather conditions plus a few extras!" />
