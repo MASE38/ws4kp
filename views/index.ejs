@@ -7,19 +7,10 @@
 (function () {
   var params = new URLSearchParams(window.location.search);
   var inDiscord = params.has('frame_id')
-    || window.location.hostname.indexOf('discordsays.com') !== -1;
+    || window.location.hostname.indexOf('discordsays.com') !== -1
+    || window.self !== window.top;
   var platform = (params.get('platform') || '').toLowerCase();
-  var isMobile = ['mobile', 'android', 'ios'].indexOf(platform) !== -1
-    || window.innerWidth < 700;
-
-  window.__ws4kpDebug = {
-    inDiscord: inDiscord,
-    platform: platform || '(none)',
-    innerWidth: window.innerWidth,
-    isMobile: isMobile,
-    clamp: 'not installed',
-    volumeRequests: []
-  };
+  var isMobile = ['mobile', 'android', 'ios'].indexOf(platform) !== -1;
 
   if (inDiscord && isMobile) {
     var proto = window.HTMLMediaElement && HTMLMediaElement.prototype;
@@ -27,24 +18,27 @@
     if (desc && desc.set) {
       Object.defineProperty(proto, 'volume', {
         get: desc.get,
-        set: function (v) {
-          window.__ws4kpDebug.volumeRequests.push(String(v));
-          desc.set.call(this, Math.min(Number(v) || 0, 0.15));
-        },
+        set: function (v) { desc.set.call(this, Math.min(Number(v) || 0, 0.04)); },
         configurable: true
       });
-      window.__ws4kpDebug.clamp = 'installed';
-    } else {
-      window.__ws4kpDebug.clamp = 'FAILED';
     }
   }
 
-  if (params.has('mediaPlaying')) return;
-  if (inDiscord) params.set('latLonQuery', 'Portland, OR, USA');
-  params.set('wide', 'true');
-  params.set('mediaPlaying', 'true');
-  params.set('mediaVolume', (inDiscord && isMobile) ? '0.15' : '0.75');
-  history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+  var changed = false;
+  if (inDiscord && params.get('kiosk') !== 'false') {
+    params.set('kiosk', 'false');
+    changed = true;
+  }
+  if (!params.has('mediaPlaying')) {
+    if (inDiscord) params.set('latLonQuery', 'Portland, OR, USA');
+    params.set('wide', 'true');
+    params.set('mediaPlaying', 'true');
+    params.set('mediaVolume', (inDiscord && isMobile) ? '0.04' : '0.75');
+    changed = true;
+  }
+  if (changed) {
+    history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+  }
 })();
 </script>
   <meta charset="utf-8" />
