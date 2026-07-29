@@ -1,6 +1,7 @@
 import { DiscordSDK, patchUrlMappings } from '@discord/embedded-app-sdk';
 
-const VOLUME = 0.25;
+const inDiscord = new URLSearchParams(window.location.search).has('frame_id')
+  || window.location.hostname.endsWith('discordsays.com');
 
 patchUrlMappings([
   { prefix: '/geocode', target: 'geocode.arcgis.com' },
@@ -9,21 +10,15 @@ patchUrlMappings([
   { prefix: '/spc', target: 'www.spc.noaa.gov' },
 ]);
 
-function unlockAudio() {
-  const media = document.querySelectorAll('audio, video');
-  if (media.length === 0) return;
-  media.forEach((el) => {
-    el.muted = false;
-    el.volume = VOLUME;
-    el.play().catch(() => {});
-  });
-  window.removeEventListener('pointerdown', unlockAudio);
-  window.removeEventListener('keydown', unlockAudio);
-  console.log('Audio unlocked');
+if (inDiscord) {
+  const style = document.createElement('style');
+  style.textContent = `
+    .lower-flex-container,
+    #divInfo,
+    .content-wrapper > .heading { display: none !important; }
+  `;
+  document.head.appendChild(style);
 }
-
-window.addEventListener('pointerdown', unlockAudio);
-window.addEventListener('keydown', unlockAudio);
 
 console.log('WS4KP custom.js loaded');
 
