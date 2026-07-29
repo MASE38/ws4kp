@@ -1,18 +1,22 @@
 import { DiscordSDK, patchUrlMappings } from '@discord/embedded-app-sdk';
 
 const VOLUME = 0.25;
+const DEFAULT_LOCATION = 'Portland, OR, USA';
 
 const params = new URLSearchParams(window.location.search);
 const inDiscord = params.has('frame_id')
   || window.location.hostname.endsWith('discordsays.com');
 
+const isMobile = (params.get('platform') || '').toLowerCase() === 'mobile'
+  || window.innerWidth < 700;
+
 if (inDiscord && !params.has('latLonQuery')) {
-  params.set('latLonQuery', 'Portland, OR, USA');
-  params.set('kiosk', 'true');
+  params.set('latLonQuery', DEFAULT_LOCATION);
   params.set('wide', 'true');
   params.set('mediaPlaying', 'true');
   params.set('mediaVolume', String(VOLUME));
-  window.location.replace(`${window.location.pathname}?${params}`);
+  if (isMobile) params.set('kiosk', 'true');
+  history.replaceState(null, '', `${window.location.pathname}?${params}`);
 }
 
 patchUrlMappings([
