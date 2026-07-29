@@ -1,5 +1,9 @@
 import { DiscordSDK, patchUrlMappings } from '@discord/embedded-app-sdk';
 
+if (!window.location.search) {
+  window.location.replace('/?latLonQuery=Portland%2C+OR%2C+USA&kiosk=true&wide=true');
+}
+
 patchUrlMappings([
   { prefix: '/geocode', target: 'geocode.arcgis.com' },
   { prefix: '/weather-api', target: 'api.weather.gov' },
