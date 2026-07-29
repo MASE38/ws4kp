@@ -12,18 +12,6 @@
   var platform = (params.get('platform') || '').toLowerCase();
   var isMobile = ['mobile', 'android', 'ios'].indexOf(platform) !== -1;
 
-  if (inDiscord && isMobile) {
-    var proto = window.HTMLMediaElement && HTMLMediaElement.prototype;
-    var desc = proto && Object.getOwnPropertyDescriptor(proto, 'volume');
-    if (desc && desc.set) {
-      Object.defineProperty(proto, 'volume', {
-        get: desc.get,
-        set: function (v) { desc.set.call(this, Math.min(Number(v) || 0, 0.04)); },
-        configurable: true
-      });
-    }
-  }
-
   var changed = false;
 
   if (inDiscord && params.get('kiosk') !== 'false') {
