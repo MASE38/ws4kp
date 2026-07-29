@@ -51,16 +51,16 @@ function setViewMode() {
 
 setViewMode();
 
-let tries = 0;
+let elapsed = 0;
 const timer = setInterval(() => {
-  tries += 1;
-  const play = document.querySelector('img[src*="play_arrow"]');
-  if (play && play.offsetParent !== null) {
-    (play.closest('a, button, label, div') || play).click();
+  elapsed += 1;
+  const btn = document.getElementById('NavigatePlay');
+  if (btn && /play_arrow/.test(btn.src) && btn.offsetParent !== null) {
+    btn.click();
     clearInterval(timer);
-  } else if (tries > 60) {
+  } else if (elapsed > 300) {
     clearInterval(timer);
   }
-}, 500);
+}, 1000);
 
 start();
