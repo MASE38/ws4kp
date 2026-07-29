@@ -15,10 +15,11 @@ if (inDiscord) {
     { prefix: '/spc', target: 'www.spc.noaa.gov' },
   ]);
 
-  const rules = [
+const rules = [
   'a[href*="github.com"] { display: none !important; }',
   '#divInfo, .content-wrapper > .heading { display: none !important; }',
   '#settings-kiosk-label, #settings-stickyKiosk-label { display: none !important; }',
+  'img[src*="fullscreen"] { display: none !important; }',
 ];
 if (isMobile) rules.push('.lower-flex-container { display: none !important; }');
 
