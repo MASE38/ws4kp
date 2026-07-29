@@ -1,0 +1,7 @@
+{
+  "name": "ws4kp",
+  "compatibility_date": "2026-07-29",
+  "assets": {
+    "directory": "./dist"
+  }
+}
