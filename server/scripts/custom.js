@@ -13,7 +13,7 @@ patchUrlMappings([
 if (inDiscord) {
   const style = document.createElement('style');
   style.textContent = `
-    .lower-flex-container,
+    a[href*="github.com"] { display: none !important; }
     #divInfo,
     .content-wrapper > .heading { display: none !important; }
   `;
