@@ -51,4 +51,16 @@ function setViewMode() {
 
 setViewMode();
 
+let tries = 0;
+const timer = setInterval(() => {
+  tries += 1;
+  const play = document.querySelector('img[src*="play_arrow"]');
+  if (play && play.offsetParent !== null) {
+    (play.closest('a, button, label, div') || play).click();
+    clearInterval(timer);
+  } else if (tries > 60) {
+    clearInterval(timer);
+  }
+}, 500);
+
 start();
