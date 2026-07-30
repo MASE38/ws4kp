@@ -1,3 +1,19 @@
+# WeatherStar 4000+ — Discord Activity fork
+
+A fork of [netbymatt/ws4kp](https://github.com/netbymatt/ws4kp) adapted to run as a
+Discord Activity. All changes live in an inline script at the top of
+`views/index.ejs` and in `server/scripts/custom.js`: they add the Discord Embedded
+App SDK handshake, route outbound requests through Discord's proxy, apply defaults
+on launch (fixed location, all displays enabled, Widescreen Enhanced, quieter audio
+on mobile), auto-start the forecast rotation, and hide a few controls that don't
+function inside Discord's iframe.
+
+Everything else — all of the weather display code — is unchanged upstream work.
+Please report issues to the original project only if you can reproduce them
+without these modifications.
+
+---
+
 ![Weatherstar 4000+ Current Conditions](https://github.com/netbymatt/ws4kp/blob/main/server/images/social/1200x600.png)
 
 # WeatherStar 4000+
